@@ -9,20 +9,22 @@ public class AimScript : MonoBehaviour {
     public Transform target;
     public GameObject aimSlider;
     public GameObject ball;
+    public GameObject mainCamera;
     Camera cam;
 
     float aimAngle = 0.0f;
-    [SerializeField] float BallSpeed = 1000.0f;
+    [SerializeField] float BallSpeed = 75.0f;
     Vector3 firstPressPosition;
     Vector3 holdPressPosition;
     float holdPressDistance = 0.0f;
     Rigidbody ballRigidbody;
+    Vector3 direction;
 
     // Use this for initialization
     void Start () {
         ballRigidbody = ball.GetComponent<Rigidbody>();
         aimSlider.GetComponent<Slider>().value = 0;
-        cam = GetComponent<Camera>();
+        cam = mainCamera.GetComponent<Camera>();
 	}
 	
 	// Update is called once per frame
@@ -52,16 +54,20 @@ public class AimScript : MonoBehaviour {
             }
             else if (Input.GetButton("Fire1"))
             {
-                Debug.Log("Angle : " + aimAngle);
+                //Debug.Log("Angle : " + aimAngle);
                 viewAimSlider();
-                Debug.Log("Distance: " + holdPressDistance);
+                //Debug.Log("Distance: " + holdPressDistance);
             }
             else if (Input.GetButtonUp("Fire1"))
             {
-                Debug.Log("Mouse up!");
-                //ballRigidbody.velocity = ballRigidbody.velocity.normalized * BallSpeed;
-                ballRigidbody.AddRelativeForce(Vector3.up * BallSpeed * Time.deltaTime);
-                aimingEnabled = false;
+                if (aimSlider.GetComponent<Slider>().value > 2.0f)
+                {
+                    Debug.Log("Mouse up!");
+                    ballRigidbody.isKinematic = false;
+                    ballRigidbody.AddRelativeForce(Vector3.up * BallSpeed * Time.deltaTime);
+                    ballRigidbody.velocity = ballRigidbody.velocity.normalized * BallSpeed;
+                    aimingEnabled = false;
+                }
                 firstPressPosition = new Vector3(0, 0, 0);
                 holdPressPosition = new Vector3(0, 0, 0);
                 holdPressDistance = 0.0f;
@@ -70,7 +76,9 @@ public class AimScript : MonoBehaviour {
         }
     }
 
-    private float AngleBetweenVectors(Vector3 vec1, Vector3 vec2)
+    
+
+        private float AngleBetweenVectors(Vector3 vec1, Vector3 vec2)
     {
         Vector3 diference = vec2 - vec1;
         float sign = (vec2.y < vec1.y) ? -1.0f : 1.0f;
@@ -82,13 +90,22 @@ public class AimScript : MonoBehaviour {
         aimSlider.GetComponent<RectTransform>().rotation = Quaternion.Euler(0, 0, aimAngle);
         ball.GetComponent<Transform>().rotation = Quaternion.Euler(0, 0, aimAngle);
         holdPressPosition = Input.mousePosition;
-        holdPressDistance = Vector3.Distance(firstPressPosition, holdPressPosition);
+        holdPressDistance = Vector3.Distance(new Vector3(holdPressPosition.x, firstPressPosition.y), holdPressPosition);
         if (holdPressDistance> 50.0f) {
             holdPressDistance = 50.0f;
         } else if(holdPressDistance < 0) {
             holdPressDistance = 0.0f;
         }
-        aimSlider.GetComponent<Slider>().value = holdPressDistance / 10;
+        direction = ((holdPressPosition) - new Vector3(holdPressPosition.x, firstPressPosition.y)) / ((holdPressPosition) - new Vector3(holdPressPosition.x, firstPressPosition.y)).magnitude;
+        if (direction == new Vector3(0, -1.0f, 0))
+        {
+            aimSlider.GetComponent<Slider>().value = holdPressDistance / 10;
+        }
+    }
+
+    public void enableAiming()
+    {
+        aimingEnabled = true;
     }
 
 
