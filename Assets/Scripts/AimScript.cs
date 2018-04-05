@@ -19,6 +19,7 @@ public class AimScript : MonoBehaviour {
     float holdPressDistance = 0.0f;
     Rigidbody ballRigidbody;
     Vector3 direction;
+    public int ballCount = 1;
 
     // Use this for initialization
     void Start () {
@@ -29,7 +30,7 @@ public class AimScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        Debug.Log("Velocity: " + ballRigidbody.velocity);
+        //Debug.Log("Velocity: " + ballRigidbody.velocity);
         if (aimingEnabled)
         {
             Vector3 screenPosition = cam.WorldToScreenPoint(target.position);
@@ -64,6 +65,7 @@ public class AimScript : MonoBehaviour {
                 {
                     Debug.Log("Mouse up!");
                     ballRigidbody.isKinematic = false;
+                    //multipleBall();
                     ballRigidbody.AddRelativeForce(Vector3.up * BallSpeed * Time.deltaTime);
                     ballRigidbody.velocity = ballRigidbody.velocity.normalized * BallSpeed;
                     aimingEnabled = false;
@@ -76,9 +78,13 @@ public class AimScript : MonoBehaviour {
         }
     }
 
-    
+    /*void multipleBall()
+    {
+       Instantiate(ball, target, true);
 
-        private float AngleBetweenVectors(Vector3 vec1, Vector3 vec2)
+    }*/
+
+    private float AngleBetweenVectors(Vector3 vec1, Vector3 vec2)
     {
         Vector3 diference = vec2 - vec1;
         float sign = (vec2.y < vec1.y) ? -1.0f : 1.0f;
@@ -108,5 +114,8 @@ public class AimScript : MonoBehaviour {
         aimingEnabled = true;
     }
 
-
+    public void increaseBall()
+    {
+        ballCount++;
+    }
 }

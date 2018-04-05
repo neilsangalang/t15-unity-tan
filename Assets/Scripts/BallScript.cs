@@ -23,7 +23,9 @@ public class BallScript : MonoBehaviour {
         {
             ballRigidbody.isKinematic = true;
             aimPosition.GetComponent<Transform>().position = transform.position;
-            aimPosition.GetComponent<AimScript>().aimingEnabled = true; 
+            aimPosition.GetComponent<AimScript>().aimingEnabled = true;
+            GameObject.Find("Map").GetComponent <MapScript>().level++;
+            GameObject.Find("Map").SendMessage("generateLine");
         }
 
     }
