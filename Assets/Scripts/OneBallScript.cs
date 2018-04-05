@@ -15,8 +15,15 @@ public class OneBallScript : MonoBehaviour
     {
         if (col.gameObject.tag == "balls")
         {
+            GetComponent<AudioSource>().Play();
             GameObject.Find("AimPosition").SendMessage("increaseBall");
-            Destroy(gameObject);
+            StartCoroutine(destroyGameObject());
         }
+    }
+
+    IEnumerator destroyGameObject()
+    {
+        yield return new WaitForSeconds(0.15f);
+        Destroy(gameObject);
     }
 }

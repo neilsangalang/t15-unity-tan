@@ -18,6 +18,7 @@ public class BlockScript : MonoBehaviour {
     {
         if (col.gameObject.name == "Ball")
         {
+            gameObject.GetComponent<AudioSource>().Play();
             reduceHP();
         }
     }

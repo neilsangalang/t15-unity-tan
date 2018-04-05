@@ -12,6 +12,13 @@ public class NewGame : MonoBehaviour {
 
     public void LoadSceneManager()
     {
+        gameObject.GetComponent<AudioSource>().Play();
+        StartCoroutine(LoadSceneOne());
+    }
+
+    IEnumerator LoadSceneOne()
+    {
+        yield return new WaitForSeconds(0.15f);
         SceneManager.LoadScene(1);
     }
 }

@@ -54,6 +54,7 @@
      <Compile Include="Assets\Scripts\AimScript.cs" />
      <Compile Include="Assets\Scripts\BackToHome.cs" />
      <Compile Include="Assets\Scripts\BallScript.cs" />
+     <Compile Include="Assets\Scripts\BGMPlayer.cs" />
      <Compile Include="Assets\Scripts\BlockScript.cs" />
      <Compile Include="Assets\Scripts\MapScript.cs" />
      <Compile Include="Assets\Scripts\NewGame.cs" />
