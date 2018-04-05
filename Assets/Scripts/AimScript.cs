@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class AimScript : MonoBehaviour {
 
@@ -10,6 +11,7 @@ public class AimScript : MonoBehaviour {
     public GameObject aimSlider;
     public GameObject ball;
     public GameObject mainCamera;
+    public GameObject BallCount;
     Camera cam;
 
     float aimAngle = 0.0f;
@@ -27,16 +29,17 @@ public class AimScript : MonoBehaviour {
         aimSlider.GetComponent<Slider>().value = 0;
         cam = mainCamera.GetComponent<Camera>();
 	}
-	
-	// Update is called once per frame
-	void Update () {
+
+    // Update is called once per frame
+    void Update()
+    {
         //Debug.Log("Velocity: " + ballRigidbody.velocity);
         if (aimingEnabled)
         {
             Vector3 screenPosition = cam.WorldToScreenPoint(target.position);
             if (AngleBetweenVectors(screenPosition, Input.mousePosition) - 90 > 70.0f)
             {
-                aimAngle = 70.0f;   
+                aimAngle = 70.0f;
             }
             else if (AngleBetweenVectors(screenPosition, Input.mousePosition) - 90 < -70.0f)
             {
@@ -75,6 +78,11 @@ public class AimScript : MonoBehaviour {
                 holdPressDistance = 0.0f;
                 aimSlider.GetComponent<Slider>().value = 0.0f;
             }
+            
+        }
+        if (Input.GetKeyUp(KeyCode.O))
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
     }
 
@@ -117,5 +125,6 @@ public class AimScript : MonoBehaviour {
     public void increaseBall()
     {
         ballCount++;
+        BallCount.GetComponent<Text>().text = "Number of Balls: " + ballCount;
     }
 }

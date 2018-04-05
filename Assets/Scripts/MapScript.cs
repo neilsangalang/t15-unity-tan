@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class MapScript : MonoBehaviour {
 
     public GameObject Block;
     public GameObject OneBall;
-    public int level = 1;
+    public GameObject Level;
+    public int level = 0;
     int[] boxLine;
 
     // Use this for initialization
@@ -76,6 +78,7 @@ public class MapScript : MonoBehaviour {
         {
             child.position = Vector3.MoveTowards(child.position, new Vector3(child.position.x, child.position.y -1.75f, child.position.z), 100*Time.deltaTime );
         }
+        Level.GetComponent<Text>().text = "Level: " + level;
 
     }
 
@@ -83,7 +86,7 @@ public class MapScript : MonoBehaviour {
     {
         foreach (Transform child in transform)
         {
-            if (Vector3.Distance(child.position, GameObject.Find("Bottom").transform.position) <= 5)
+            if (Vector3.Distance(child.position, GameObject.Find("Bottom").transform.position) <= 3)
             {
                 Debug.Log("Game Over!");
                 SceneManager.LoadScene(2);
